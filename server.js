@@ -1,11 +1,17 @@
 const express = require('express');
     
-const users = require('./routes/api/Users.js');
-const profile = require('./routes/api/Profile.js');
-const posts = require('./routes/api/Posts.js');
+const users = require('./routes/api/users.js');
+const profile = require('./routes/api/profile.js');
+const posts = require('./routes/api/posts.js');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 const mongoose = require('mongoose');
 
 const app = express();
+
+// Body Parser Middleware 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 // DB Config
 const db = require('./config/keys').mongoURI;
 
@@ -14,7 +20,11 @@ mongoose.connect(db)
         .then(() => console.log('MongoDB Connected'))
         .catch(err => console.log(err));
 
-app.get('/', (req, res) => res.send('Home'));
+// PASSPORT MIDDDLEWARE
+app.use(passport.initialize());
+
+// passport config 
+require('./config/passport.js')(passport);
 
 // Use Routes Folder
 app.use('/api/users', users);
