@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
     .catch(err => res.status(404).json({nopostsfound: 'No Posts Found'}))
 })
 
-// @route       POST api/posts/:id
+// @route       GET api/posts/:id
 // @description get post
 // @access      Public
 router.get('/:id', (req, res) => {
@@ -80,7 +80,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, re
             }
             post.remove().then(() => res.json({ success: true }));
             
-          })
+          }) 
           .catch(err => res.status(404).json({ postnotfound: 'No Post Found'}));
         })       
       })

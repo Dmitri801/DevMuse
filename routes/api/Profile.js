@@ -5,6 +5,8 @@ const passport = require('passport');
 
 // Load Validation
 const validateProfileInput = require('../../validation/profile')
+const validateExperienceInput = require('../../validation/experience');
+const validateEducationInput = require("../../validation/education");
 
 // Load Profile Model
 const Profile = require('../../models/Profile');
@@ -107,7 +109,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
       return res.status(400).json(errors);
     }
   // Get Fields // Here we are retrieving the fields from this POST request that are sent to our Profile Model db *see models/Profile*
-  const profileFields = {};
+  const profileFields = {}; 
  profileFields.user = req.user.id
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.company) profileFields.company = req.body.company;
@@ -125,7 +127,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
-    if (req.body.soundcloud) profileFields.social.soundcloud = req.body.soundcloud;
+    if (req.body.soundcloud) profileFields.social.soundcloud = req.body.soundcloud; 
     //UPDATE 
     Profile.findOne({ user: req.user.id })
         .then(profile => {
@@ -157,7 +159,14 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 // @access      Private
 
 router.post('/experience', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Profile.findOne({ user: req.user.id })
+  const { errors, isValid } = validateExperienceInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // Return any errors
+    return res.status(400).json(errors);
+  }
+  Profile.findOne({ user: req.user.id }) 
         .then(profile => {
           const newExp = {
             title: req.body.title,
@@ -182,6 +191,13 @@ router.post('/experience', passport.authenticate('jwt', { session: false}), (req
 // @access      Private
 
 router.post('/education', passport.authenticate('jwt', { session: false}), (req, res) => {
+  const { errors, isValid } = validateEducationInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // Return any errors
+    return res.status(400).json(errors);
+  }
   Profile.findOne({ user: req.user.id })
         .then(profile => {
           const newEdu = {

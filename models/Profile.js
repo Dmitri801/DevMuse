@@ -38,13 +38,16 @@ const ProfileSchema = new Schema({
   experience: [
     {
       title: {
-        type: String
+        type: String,
+        
       },
       company: {
-        type: String
+        type: String,
+        
       },
       location: {
-        type: String
+        type: String,
+        
       },
       from: {
         type: Date
@@ -64,20 +67,20 @@ const ProfileSchema = new Schema({
   education: [
     {
       school: {
-        type: String,
-        required: false
+        type: String
+       
       },
       degree: {
-        type: String,
-        required: false
+        type: String
+       
       },
       fieldofstudy: {
-        type: String,
-        required: false
+        type: String
+       
       },
       from: {
-        type: Date,
-        required: false
+        type: Date
+        
       },
       to: {
         type: Date
@@ -91,8 +94,9 @@ const ProfileSchema = new Schema({
       }
     }
   ],
-  social: [
-   { youtube: {
+  social: 
+   { 
+     youtube: {
       type: String
     },
     twitter: {
@@ -104,12 +108,15 @@ const ProfileSchema = new Schema({
     linkedin: {
       type: String
     },
+    facebook: {
+      type: String
+    },
   date: {
     type: Date,
     default: Date.now
   }
 }
- ]
+ 
 });
 
 

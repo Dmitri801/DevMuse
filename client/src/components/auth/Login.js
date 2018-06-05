@@ -3,8 +3,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import { loginUser } from '../../actions/authActions';
+import TextFieldGroup from '../common/TextFieldGroup';
 
 
 class Login extends Component {
@@ -13,24 +13,45 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      errors: {}
+      errors: {},
+      loading: false
     }
   }
   componentDidMount() {
     if(this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+        this.props.history.push("/dashboard");
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+        this.setState({ loading: true })
+        setTimeout(() => {
+          this.setState({
+            loading: false
+          });
+          this.props.history.push("/dashboard");
+        }, 600) 
+      
+      
     }
 
     if(nextProps.errors) {
-      this.setState({ errors: nextProps.errors })
+      if(this.state.email === '' || this.state.password === '') {
+        this.setState({ errors: nextProps.errors })
+      } else {
+        this.setState({ loading: true })
+        setTimeout(() => {
+          this.setState({
+            errors: nextProps.errors,
+            loading: false
+          });
+        }, 600)  
+      }
     }
   }
+
+
 
   onSubmit = (e) => {
     e.preventDefault()
@@ -38,8 +59,10 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     }
-
-    this.props.loginUser(userData);
+    
+      this.props.loginUser(userData); 
+  
+    
   }
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
@@ -48,8 +71,11 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
 
+    const loadingWheel = (
+      <div className="spinnerX"></div>
+    )
 
-    return <div>
+    return <div ref="myRef">
         <div className="login">
           <div className="container">
             <div className="row">
@@ -58,35 +84,26 @@ class Login extends Component {
                 <p className="lead text-center">
                   Sign in to your DevMuse account
                 </p>
-                <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                  <input
-                    type="email"
-                    className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.email
-                    })}
-                    placeholder="Email Address"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChange}
+                <form onSubmit={this.onSubmit} noValidate>
+                  <TextFieldGroup 
+                  placeholder={'Email Address'}
+                  name={'email'}
+                  type={'email'}
+                  value={this.state.email}
+                  onChange={this.onChange}
+                  error={errors.email}
+                  loading={this.state.loading}
                   />
-                  {errors.email && (
-                    <div className="invalid-feedback">{errors.email}</div>
-                  )}
-                  </div>
-                  <div className="form-group">
-                    <input type="password"  placeholder="Password" name="password" 
-                           value={this.state.password}
-                           onChange={this.onChange}
-                           className=
-                           {classnames("form-control form-control-lg", {
-                           "is-invalid": errors.password
-                    })}/>
-                  {errors.password && (
-                    <div className="invalid-feedback">{errors.password}</div>
-                  )}
-                  </div>
-                  <input type="submit" className="btn btn-info btn-block mt-4" />
+                  <TextFieldGroup
+                    placeholder={'Password'}
+                    name={'password'}
+                    type={'password'}
+                    value={this.state.password}
+                    onChange={this.onChange}
+                    error={errors.password}
+                    loading={this.state.loading}
+                  />
+                  {this.state.loading ? loadingWheel : <input type="submit" className="btn btn-info btn-block mt-4" />}
                 </form>
               </div>
             </div>

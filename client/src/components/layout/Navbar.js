@@ -4,22 +4,29 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logOutUser } from '../../actions/authActions';
+import { clearCurrentProfile } from '../../actions/profileActions';
 
 class Navbar extends Component {
   onLogOutClick = (e) => {
     e.preventDefault()
+    this.props.clearCurrentProfile();
     this.props.logOutUser();
     
   }
     render() {
       const { isAuthenticated, user } = this.props.auth;
-
+ 
       const authLinks = <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <Link className="nav-link" to="/dashboard">
-              Dashboard
-            </Link>
-          </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/feed">
+            Posts Feed
+           </Link>
+        </li> 
+        <li className="nav-item">
+          <Link className="nav-link" to="/dashboard">
+            Dashboard
+           </Link> 
+        </li>  
           <li className="nav-item">
             <a href="#!" className="nav-link" onClick={this.onLogOutClick}>
               <img src={user.avatar} alt={user.name} style={{ maxWidth: "20px", marginRight: "5px" }} title="You Must Have A Gravatar Connected To Your Email To Display An Image" className="rounded-circle"/>
@@ -31,14 +38,15 @@ class Navbar extends Component {
       const guestLinks = (
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
-            <Link className="nav-link" to="/register">
-              Sign Up
-           </Link>
+         <Link className="nav-link" to="/register">
+                Sign Up
+           </Link>   
             </li>
             <li className="nav-item">
             <Link className="nav-link" to="/login">
-              Login
+                Login
             </Link>
+          
           </li>
          </ul>
         )
@@ -61,7 +69,7 @@ class Navbar extends Component {
                   </Link>
                 </li>
               </ul>
-              {isAuthenticated ? (authLinks) : (guestLinks)}
+              {isAuthenticated ? authLinks : guestLinks}
             </div>
           </div>
         </nav>
@@ -81,4 +89,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { logOutUser })(Navbar);
+export default connect(mapStateToProps, { logOutUser, clearCurrentProfile })(Navbar);
