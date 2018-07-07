@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
@@ -38,49 +38,16 @@ const ProfileSchema = new Schema({
   experience: [
     {
       title: {
-        type: String,
-        
+        type: String
       },
       company: {
-        type: String,
-        
+        type: String
       },
       location: {
-        type: String,
-        
+        type: String
       },
       from: {
         type: Date
-      },
-      to: {
-        type: Date
-      },
-      current: {
-        type: Boolean,
-        default: false
-      },
-      description: {
-        type: String
-     }
-    }
-  ],
-  education: [
-    {
-      school: {
-        type: String
-       
-      },
-      degree: {
-        type: String
-       
-      },
-      fieldofstudy: {
-        type: String
-       
-      },
-      from: {
-        type: Date
-        
       },
       to: {
         type: Date
@@ -94,9 +61,34 @@ const ProfileSchema = new Schema({
       }
     }
   ],
-  social: 
-   { 
-     youtube: {
+  education: [
+    {
+      school: {
+        type: String
+      },
+      degree: {
+        type: String
+      },
+      fieldofstudy: {
+        type: String
+      },
+      from: {
+        type: Date
+      },
+      to: {
+        type: Date
+      },
+      current: {
+        type: Boolean,
+        default: false
+      },
+      description: {
+        type: String
+      }
+    }
+  ],
+  social: {
+    youtube: {
       type: String
     },
     twitter: {
@@ -111,13 +103,11 @@ const ProfileSchema = new Schema({
     facebook: {
       type: String
     },
-  date: {
-    type: Date,
-    default: Date.now
+    date: {
+      type: Date,
+      default: Date.now
+    }
   }
-}
- 
 });
 
-
-module.exports = Profile = mongoose.model('profile', ProfileSchema);
+module.exports = Profile = mongoose.model("profile", ProfileSchema);

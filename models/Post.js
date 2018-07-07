@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 
 // Create Schema
 
@@ -49,10 +48,10 @@ const PostSchema = new Schema({
       }
     }
   ],
-   date: {
+  date: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = Post= mongoose.model("post", PostSchema);
+module.exports = Post = mongoose.model("post", PostSchema);
