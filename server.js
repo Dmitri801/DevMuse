@@ -29,9 +29,9 @@ app.use(passport.initialize());
 require("./config/passport.js")(passport);
 
 // Use Routes Folder
-app.use("/api/users", users);
-app.use("/api/profile", profile);
-app.use("/api/posts", posts);
+app.use("/api/Users", users);
+app.use("/api/Profile", profile);
+app.use("/api/Posts", posts);
 
 // Serve Static Assets If In Production
 if (process.env.NODE_ENV === "production") {
